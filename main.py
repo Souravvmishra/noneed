@@ -7,6 +7,8 @@ import pandas as pd
 import argparse
 from threading import Thread
 from keep_alive import keep_alive
+from datetime import datetime
+
 
 @dataclass
 class Business:
@@ -185,8 +187,8 @@ def main():
                 print(e)
 
         # saving to both excel and csv just to showcase the features.
-        business_list.save_to_excel("google_maps_data")
-        business_list.save_to_csv("google_maps_data")
+        business_list.save_to_excel('google_maps_data.xlsx')
+        business_list.save_to_csv('google_maps_data.csv')
 
         browser.close()
 
@@ -208,7 +210,7 @@ if __name__ == "__main__":
     if args.total:
         total = args.total
     else:
-        total = 50
+        total = 50000
 
     
     t = Thread(target=main)
