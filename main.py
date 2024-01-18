@@ -7,7 +7,19 @@ import pandas as pd
 import argparse
 from threading import Thread
 from keep_alive import keep_alive
-from datetime import datetime
+import telebot
+import os
+
+
+bot = telebot.TeleBot(os.environ["TOKEN"], parse_mode=None)
+
+# Replace 'YOUR_BOT_TOKEN' with the actual token you obtained from BotFather
+
+user_id = 960867942
+
+document_path = 'google_maps_data.csv'
+
+
 
 
 @dataclass
@@ -65,6 +77,7 @@ def extract_coordinates_from_url(url: str) -> tuple[float,float]:
     return float(coordinates.split(',')[0]), float(coordinates.split(',')[1])
 
 def main():
+    bot.send_message(user_id, 'Started...')
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
         page = browser.new_page()
@@ -183,6 +196,10 @@ def main():
 
                 business_list.business_list.append(business)
                 print('Done')
+                
+                bot.send_message(user_id, 'Done')
+                with open(document_path, 'rb') as document:
+                    bot.send_document(user_id, document)
             except Exception as e:
                 print(e)
 
